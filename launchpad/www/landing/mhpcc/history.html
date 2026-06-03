@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MHPCC History</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f3ea;
+        --text: #20211d;
+        --muted: #66675d;
+        --line: #d8d0c0;
+        --panel: #fffaf0;
+        --accent: #155f5a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .shell {
+        width: min(860px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 32px 0 56px;
+      }
+
+      .back {
+        display: inline-block;
+        margin-bottom: 24px;
+        color: var(--accent);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      article {
+        padding: 34px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.15;
+      }
+
+      h1 {
+        margin: 0 0 20px;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+      }
+
+      h2 {
+        margin: 32px 0 12px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        font-size: 1.5rem;
+      }
+
+      h3 {
+        margin: 24px 0 10px;
+        color: var(--accent);
+        font-size: 1.12rem;
+      }
+
+      p,
+      li {
+        font-size: 1.08rem;
+        line-height: 1.65;
+      }
+
+      p {
+        margin: 0 0 16px;
+      }
+
+      ol,
+      ul {
+        padding-left: 1.4rem;
+      }
+
+      li + li {
+        margin-top: 10px;
+      }
+
+      strong {
+        font-weight: 700;
+      }
+
+      em {
+        color: color-mix(in srgb, var(--text) 82%, var(--accent));
+      }
+
+      .note {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 0.95rem;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171816;
+          --text: #f1eee6;
+          --muted: #b8b2a4;
+          --line: #3a3c35;
+          --panel: #21231f;
+          --accent: #7ccfc6;
+        }
+      }
+
+      @media (max-width: 640px) {
+        article {
+          padding: 24px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <a class="back" href="/mhpcc/">Back to the 1994 MHPCC archive</a>
+      <article>
+        <h1>🏛️ Supercomputing History: MHPCC and the Mid-90s Top Tier</h1>
+
+        <h2>📌 Context and Historical Standing</h2>
+        <p>
+          In <strong>1994 and 1995</strong>, the Maui High Performance Computing Center
+          (<strong>MHPCC</strong>) was globally recognized as one of the elite centers for
+          high-performance computing. Officially launched in late 1994 with 400 nodes, it
+          was rapidly expanded to a <strong>512-node IBM SP2 configuration</strong> by
+          1995/1996.
+        </p>
+        <p>
+          At the time, MHPCC was billed as the <strong>6th largest unclassified technical
+          computing center in the world</strong>.
+        </p>
+
+        <h3>🥇 The Global Top Tier, 1994-1995</h3>
+        <p>
+          The unclassified facilities and systems ranking ahead of or alongside MHPCC on
+          the official <strong>TOP500</strong> lists included:
+        </p>
+        <ol>
+          <li><strong>Sandia National Laboratories (U.S.)</strong>: Maintained the #1 spot in 1994 using the massive <em>Intel Paragon XP/S 140</em> cluster.</li>
+          <li><strong>National Aerospace Laboratory (Japan)</strong>: Operated the <em>Numerical Wind Tunnel</em>, a custom vector parallel Fujitsu system that dominated global benchmarks.</li>
+          <li><strong>Los Alamos National Laboratory (U.S.)</strong>: Powered by a massive 1,056-core <em>Thinking Machines CM-5</em> and subsequent <em>Cray T3D</em> systems.</li>
+          <li><strong>Oak Ridge National Laboratory (U.S.)</strong>: Anchored by the <em>Intel Paragon XP/S 150</em>, holding a top-three global position by early 1995.</li>
+          <li><strong>The Cornell Theory Center (U.S.)</strong>: A premier academic peer that deployed its own production <em>512-node IBM SP2</em> system in early 1995.</li>
+          <li><strong>National Center for Supercomputing Applications (NCSA) (U.S.)</strong>: Based at UIUC, running a highly ranked <em>Thinking Machines CM-5/512</em>.</li>
+          <li><strong>Minnesota Supercomputer Center (U.S.)</strong>: An academic powerhouse operating a top-tier <em>CM-5</em> cluster.</li>
+          <li><strong>National Security Agency (NSA) (U.S.)</strong>: Maintained equivalent hardware, including massive <em>CM-5</em> units, though a large portion of their aggregate center performance remained classified.</li>
+        </ol>
+
+        <h2>🛠️ System Architecture: The IBM SP2</h2>
+        <p>
+          The backbone of MHPCC's mid-90s dominance was the <strong>IBM SP2</strong>, a
+          milestone architecture that proved commercial RISC-based parallel computing
+          could outpace traditional monolithic supercomputers.
+        </p>
+
+        <h3>📐 Structural Overview</h3>
+        <ul>
+          <li><strong>System Type</strong>: Massively Parallel Processing (MPP) Multicomputer.</li>
+          <li><strong>Topology</strong>: Distributed Memory / Shared-Nothing Architecture. Each node ran its own private memory and its own individual instance of the <strong>AIX operating system</strong>, IBM's Unix.</li>
+          <li><strong>Programming Model</strong>: Explicit Message Passing. Applications relied heavily on Message Passing Interface (<strong>MPI</strong>) and IBM's Message Passing Library (<strong>MPL</strong>) to coordinate workloads across processors.</li>
+        </ul>
+
+        <p class="note">
+          Source: converted from the Obsidian note "MHPCC History" and published as context
+          for the preserved 1994 MHPCC website archive.
+        </p>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Felix Launch Pad</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f6f3ec;
+        --text: #20211d;
+        --muted: #67685f;
+        --line: #d8d2c4;
+        --card: #fffaf0;
+        --card-strong: #eef5f4;
+        --accent: #146c66;
+        --accent-dark: #0b4d49;
+        --shadow: 0 16px 36px rgba(31, 34, 29, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background:
+          linear-gradient(135deg, rgba(20, 108, 102, 0.12), transparent 36%),
+          linear-gradient(315deg, rgba(178, 95, 64, 0.12), transparent 38%),
+          var(--bg);
+        color: var(--text);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(960px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 34px 0;
+      }
+
+      .masthead {
+        display: grid;
+        gap: 10px;
+        padding: 18px 0 26px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .eyebrow {
+        margin: 0;
+        color: var(--accent-dark);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0;
+        font-size: clamp(2rem, 5vw, 3.7rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+
+      .summary {
+        max-width: 660px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.55;
+      }
+
+      .section {
+        padding: 26px 0;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 16px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.2;
+      }
+
+      .section-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 16px;
+      }
+
+      .card {
+        display: grid;
+        min-height: 150px;
+        padding: 18px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--card) 92%, white);
+        box-shadow: var(--shadow);
+        text-decoration: none;
+      }
+
+      .card.featured {
+        background: var(--card-strong);
+      }
+
+      .card-kicker {
+        color: var(--accent-dark);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .card strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 1.18rem;
+        line-height: 1.15;
+      }
+
+      .card span:last-child {
+        align-self: end;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .card:hover,
+      .card:focus-visible {
+        border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+        transform: translateY(-1px);
+      }
+
+      .pending {
+        min-height: 120px;
+        box-shadow: none;
+        background: rgba(255, 250, 240, 0.58);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171816;
+          --text: #f1eee6;
+          --muted: #b8b2a4;
+          --line: #3a3c35;
+          --card: #21231f;
+          --card-strong: #1d2b2a;
+          --accent: #5ab8ae;
+          --accent-dark: #7ccfc6;
+          --shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+        }
+      }
+
+      @media (max-width: 640px) {
+        .shell {
+          width: min(100% - 24px, 1080px);
+          padding: 28px 0;
+        }
+
+        .masthead {
+          padding-top: 18px;
+        }
+
+        .section-header {
+          align-items: start;
+          flex-direction: column;
+          gap: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <p class="eyebrow">fjs.cx</p>
+        <h1>Felix Launch Pad</h1>
+        <p class="summary">
+          A small front door for the web tools, demos, and references that live on this server.
+        </p>
+      </header>
+
+      <section class="section" aria-labelledby="tools-title">
+        <div class="section-header">
+          <h2 id="tools-title">Tools</h2>
+          <p class="section-note">Starting with the Caddy-hosted pages.</p>
+        </div>
+        <div class="grid">
+          <a class="card featured" href="https://sonar.fjs.app/">
+            <span class="card-kicker">Analysis</span>
+            <strong>Sonar Beam Pattern Tool</strong>
+            <span>Advanced sonar beam pattern analysis and visualization.</span>
+          </a>
+          <a class="card" href="/mhpcc/">
+            <span class="card-kicker">History</span>
+            <strong>MHPCC Website from 1994</strong>
+            <span>Archived Maui High Performance Computing Center overview page.</span>
+          </a>
+          <a class="card" href="/mhpcc/history.html">
+            <span class="card-kicker">Context</span>
+            <strong>MHPCC Historical Significance</strong>
+            <span>Why MHPCC mattered in the mid-1990s supercomputing landscape.</span>
+          </a>
+          <a class="card" href="https://eberly.xyz/">
+            <span class="card-kicker">Family</span>
+            <strong>eberly.xyz</strong>
+            <span>Purchased for my daughter when she married, in case she needed a domain with her last name.</span>
+          </a>
+          <div class="card pending" aria-label="More links coming soon">
+            <span class="card-kicker">Next</span>
+            <strong>More candidates</strong>
+            <span>Additional pages can slot in here as we choose what belongs on the launch pad.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
