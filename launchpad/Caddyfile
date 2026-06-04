@@ -50,8 +50,14 @@ test.fjs.app {
 	encode zstd gzip
 }
 
-maggie.fjs.cx, maggie.fjs.app {
+maggie.fjs.cx, maggie.fjs.app, maggie.eberly.xyz {
 	root * /var/www/maggie.fjs.cx
+	file_server
+	encode zstd gzip
+}
+
+ty.fjs.cx, ty.eberly.xyz {
+	root * /var/www/ty.fjs.cx
 	file_server
 	encode zstd gzip
 }

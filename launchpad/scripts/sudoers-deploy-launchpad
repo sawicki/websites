@@ -1,0 +1,3 @@
+# Allow felix to deploy the static launchpad sites without a sudo password.
+# Install as /etc/sudoers.d/deploy-launchpad with mode 0440.
+felix ALL=(root) NOPASSWD: /usr/local/sbin/deploy-launchpad
