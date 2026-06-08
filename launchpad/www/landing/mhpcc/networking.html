@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MHPCC Networking, circa 1994</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f7f3ea;
+        --text: #20211d;
+        --muted: #66675d;
+        --line: #d8d0c0;
+        --panel: #fffaf0;
+        --accent: #155f5a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .shell {
+        width: min(900px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 32px 0 56px;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 24px;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      .nav a {
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--accent);
+        font-size: 0.92rem;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      article {
+        padding: 34px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.15;
+      }
+
+      h1 {
+        margin: 0 0 20px;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+      }
+
+      h2 {
+        margin: 32px 0 12px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+        font-size: 1.5rem;
+      }
+
+      h3 {
+        margin: 24px 0 10px;
+        color: var(--accent);
+        font-size: 1.12rem;
+      }
+
+      p,
+      li {
+        font-size: 1.08rem;
+        line-height: 1.65;
+      }
+
+      p {
+        margin: 0 0 16px;
+      }
+
+      ul {
+        padding-left: 1.4rem;
+      }
+
+      li + li {
+        margin-top: 10px;
+      }
+
+      strong {
+        font-weight: 700;
+      }
+
+      em {
+        color: color-mix(in srgb, var(--text) 82%, var(--accent));
+      }
+
+      .note {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 0.95rem;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171816;
+          --text: #f1eee6;
+          --muted: #b8b2a4;
+          --line: #3a3c35;
+          --panel: #21231f;
+          --accent: #7ccfc6;
+        }
+      }
+
+      @media (max-width: 640px) {
+        article {
+          padding: 24px 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="nav" aria-label="MHPCC pages">
+        <a href="/mhpcc/">1994 Archive</a>
+        <a href="/mhpcc/history.html">Historical Significance</a>
+        <a href="/mhpcc/networking.html">Networking</a>
+      </nav>
+
+      <article>
+        <h1>🌐 MHPCC Network Architecture, circa 1994</h1>
+
+        <h2>WAN And Internet Presence</h2>
+        <p>
+          In <strong>1994</strong>, the Maui High Performance Computing Center
+          connected to the global internet backbone through a <strong>dedicated T1
+          circuit</strong> operating at <strong>1.544 Mbps</strong>. From Kihei, Maui,
+          traffic crossed inter-island infrastructure, transpacific undersea cable
+          paths, and West Coast gateways before reaching mainland backbone networks.
+        </p>
+
+        <h3>Physical Routing Path</h3>
+        <ul>
+          <li><strong>Kihei, Maui</strong>: Outbound supercomputer traffic exited the MHPCC facility.</li>
+          <li><strong>Oahu transit</strong>: Traffic hopped inter-island to data hubs on Oahu.</li>
+          <li><strong>Transpacific cable path</strong>: Data traveled by undersea cable toward the mainland.</li>
+          <li><strong>Los Angeles, California</strong>: The transpacific link landed at the West Coast gateway.</li>
+        </ul>
+
+        <h2>🏛 Routing And Backbone Context</h2>
+        <ul>
+          <li><strong>Autonomous System Number</strong>: MHPCC was registered as <strong>AS3381</strong>, also known as <em>MHPCC-AS</em>, on January 7, 1994.</li>
+          <li><strong>Primary backbone provider</strong>: The wide-area path was associated with <strong>ANSNET</strong>, Advanced Networks and Services.</li>
+          <li><strong>Upstream context</strong>: The center connected into the NSFNET-era backbone environment and early DoD High Performance Computing networking efforts.</li>
+        </ul>
+
+        <h2>⚠️ Propagation Delay And TCP Bottlenecks</h2>
+        <p>
+          Running a major IBM SP2 installation from Maui over a single T1 link
+          exposed wide-area networking limits that were easy to overlook on the
+          mainland. The distance to Los Angeles made MHPCC a practical example of
+          the early <strong>Long Fat Network</strong> problem.
+        </p>
+        <ul>
+          <li><strong>High propagation latency</strong>: The long physical path added substantial delay.</li>
+          <li><strong>TCP window limits</strong>: Early-1990s TCP behavior could stall over long-distance, high-delay paths.</li>
+          <li><strong>Throughput choking</strong>: Latency could be misread as congestion.</li>
+          <li><strong>Pipe underutilization</strong>: The T1 could fail to reach its full useful capacity.</li>
+        </ul>
+
+        <h2>🖥 Early Web Space</h2>
+        <ul>
+          <li><strong>Launch date</strong>: The official MHPCC World Wide Web server launched in <strong>August 1994</strong>.</li>
+          <li><strong>Web scale</strong>: This was early enough that the public web still had only a few thousand active websites.</li>
+          <li><strong>Browser context</strong>: Many users reached the web through <strong>NCSA Mosaic</strong>.</li>
+          <li><strong>Domain email</strong>: External communication used the <code>help@mail.mhpcc.edu</code> gateway shown in the original archive.</li>
+        </ul>
+
+        <h2>🔌 Internal Kihei Facility Network</h2>
+        <p>
+          The Kihei datacenter had to connect a heterogeneous computing environment,
+          not a single monolithic machine. MHPCC's public-facing production system
+          was the <strong>400-node IBM 9076 SP2</strong>. By the end of the buildout,
+          the center operated <strong>512 SP2 nodes in aggregate</strong> across
+          production, classified, and training clusters.
+        </p>
+
+        <h3>IBM SP2 High-Performance Switch</h3>
+        <ul>
+          <li><strong>Role</strong>: Primary node-to-node interconnect inside the SP2 frames.</li>
+          <li><strong>Technology</strong>: IBM's proprietary <strong>High-Performance Switch</strong>, originally code-named <em>Vulcan</em>.</li>
+          <li><strong>Topology</strong>: Multi-stage bidirectional switching fabric using crossbar switch boards.</li>
+          <li><strong>Performance context</strong>: Low-latency message passing between AIX nodes, with roughly <strong>40 MB/s</strong>, or <strong>320 Mbps</strong>, per link.</li>
+        </ul>
+
+        <h3>HIPPI Fabric</h3>
+        <ul>
+          <li><strong>Speed</strong>: <strong>800 Mbps</strong> parallel transmission over heavy multi-pair copper cabling.</li>
+          <li><strong>Role</strong>: High-speed data path between SP2 systems, large storage arrays, and visualization systems.</li>
+          <li><strong>Use case</strong>: Moving large scientific and imaging data sets to <strong>Silicon Graphics</strong> visualization workstations and storage resources.</li>
+        </ul>
+
+        <h3>FDDI Backbone</h3>
+        <ul>
+          <li><strong>Speed</strong>: <strong>100 Mbps</strong> dual-ring token-passing fiber network.</li>
+          <li><strong>Role</strong>: Campus and facility backbone.</li>
+          <li><strong>Connected systems</strong>: Sun workstations, secondary servers, administrative systems, X-terminals, and supercomputing room infrastructure.</li>
+        </ul>
+
+        <h2>🎛 Wide Area Frame Relay</h2>
+        <p>
+          In addition to the dedicated T1 backbone to Los Angeles, MHPCC used
+          <strong>Frame Relay</strong> as a secondary wide-area data link technology.
+        </p>
+        <ul>
+          <li><strong>Burst economics</strong>: Frame Relay allowed bursty traffic over shared infrastructure with a lower committed information rate.</li>
+          <li><strong>Local and partner access</strong>: It was useful for connecting Hawaii institutions, commercial R&amp;D partners, and state agencies.</li>
+          <li><strong>Experimental programs</strong>: Frame Relay and ISDN-era networking were part of the broader context for early remote-access, telemedicine, and disaster-relief communication pilots.</li>
+        </ul>
+
+        <h2>🖥 Multi-Vendor Systems Connected By The Network</h2>
+        <ul>
+          <li><strong>IBM processing core</strong>: 400-node unclassified IBM 9076 SP2, plus separate classified and training SP2 clusters.</li>
+          <li><strong>SGI visualization tier</strong>: Silicon Graphics systems used for rendering scientific, satellite, and atmospheric data.</li>
+          <li><strong>Sun infrastructure</strong>: Sun SPARC workstations and servers used for development, compilation, monitoring, and researcher access.</li>
+        </ul>
+
+        <p class="note">
+          Source: converted from the Obsidian note "MHPCC Networking" and published
+          as context for the preserved 1994 MHPCC website archive.
+        </p>
+      </article>
+    </main>
+  </body>
+</html>

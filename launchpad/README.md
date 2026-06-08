@@ -6,6 +6,7 @@ Static websites deployed to the Hostinger VPS.
 
 - `https://fjs.cx/` -> `www/landing/`
 - `https://fjs.cx/mhpcc/` -> `www/landing/mhpcc/`
+- `https://fjs.cx/mhpcc/networking.html` -> `www/landing/mhpcc/networking.html`
 - `https://eberly.xyz/` -> `www/eberly.xyz/`
 - `https://ty.fjs.cx/` -> `www/ty.fjs.cx/`
 - `https://maggie.eberly.xyz/` -> `/var/www/maggie.fjs.cx`
