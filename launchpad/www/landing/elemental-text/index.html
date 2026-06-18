@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elemental Text</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0d0e11;
+    --bg-2: #121419;
+    --ink: #e7e8ec;
+    --muted: #6f7480;
+    --line: rgba(255,255,255,.07);
+  }
+  *{ box-sizing: border-box; }
+  html, body{ height:100%; margin:0; }
+  body{
+    background:
+      radial-gradient(1200px 700px at 70% -10%, #16181f 0%, transparent 60%),
+      var(--bg);
+    color: var(--ink);
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ---------- header ---------- */
+  .topbar{
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; align-items: center; gap: 18px;
+    padding: 16px 28px;
+    background: linear-gradient(180deg, rgba(13,14,17,.92) 0%, rgba(13,14,17,.7) 60%, transparent 100%);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+  }
+  .topbar .brand{
+    font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); white-space: nowrap;
+  }
+  .topbar .hint{
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px; color: var(--muted);
+  }
+  .words{ display:flex; gap:8px; flex-wrap: wrap; }
+  .chip{
+    font-family:"JetBrains Mono", monospace;
+    font-size: 12px; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--line); background: rgba(255,255,255,.02);
+  }
+  .chip[data-k="fire"]{ color:#ffae5c; border-color: rgba(255,120,0,.35); }
+  .chip[data-k="smoke"]{ color:#b6bcc4; border-color: rgba(180,188,200,.25); }
+  .chip[data-k="metal"]{ color:#dfe4ec; border-color: rgba(210,220,235,.3); }
+  .chip[data-k="wind"]{ color:#a9ddff; border-color: rgba(140,205,255,.3); }
+
+  /* ---------- the editor stack ---------- */
+  .scroll{
+    position: absolute; inset: 0; z-index: 10;
+    overflow-y: auto; overflow-x: hidden;
+  }
+  .scroll::-webkit-scrollbar{ width: 10px; }
+  .scroll::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.08); border-radius: 8px; }
+
+  /* editor and mirror MUST share identical box metrics */
+  .editor, .mirror{
+    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: clamp(30px, 4.4vw, 60px);
+    line-height: 1.42;
+    letter-spacing: -0.01em;
+    padding: 104px max(28px, 6vw) 30vh;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: normal;
+    width: 100%;
+  }
+  .mirror{
+    position: absolute; top: 0; left: 0; right: 0;
+    z-index: 1;
+    pointer-events: none;
+    color: var(--ink);
+  }
+  .editor{
+    position: relative;
+    z-index: 2;
+    min-height: 100%;
+    color: transparent;            /* mirror shows the styled text */
+    caret-color: #ffffff;
+    outline: none;
+  }
+  .editor::selection{ background: rgba(120,160,255,.25); }
+  .editor *::selection{ background: rgba(120,160,255,.25); }
+
+  /* ---------- elemental word styling (mirror only) ---------- */
+  .fx{ position: relative; }
+
+  .fx-fire{
+    background: linear-gradient(0deg, #ff2d00 0%, #ff6a00 38%, #ffc43d 78%, #ffe89a 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 14px rgba(255,90,0,.65));
+    animation: fireFlicker .11s infinite alternate;
+  }
+  @keyframes fireFlicker{
+    from{ filter: drop-shadow(0 0 10px rgba(255,70,0,.55)); opacity:.9; }
+    to  { filter: drop-shadow(0 0 20px rgba(255,150,0,.85)); opacity:1; }
+  }
+
+  .fx-smoke{
+    color: #b0b6be;
+    filter: blur(.4px) drop-shadow(0 0 12px rgba(170,178,190,.3));
+    animation: smokeBreathe 2.4s ease-in-out infinite;
+  }
+  @keyframes smokeBreathe{ 0%,100%{ opacity:.78; } 50%{ opacity:.95; } }
+
+  .fx-metal{
+    background: linear-gradient(100deg,#5b626d 0%,#c7ccd6 18%,#8a909c 34%,#ffffff 50%,#8a909c 66%,#c7ccd6 82%,#5b626d 100%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 2px 1px rgba(0,0,0,.55));
+    animation: metalSheen 3.4s linear infinite;
+  }
+  @keyframes metalSheen{ from{ background-position: 200% 0; } to{ background-position: 0% 0; } }
+
+  .fx-wind{
+    color: #b8e6ff;
+    filter: drop-shadow(0 0 9px rgba(150,210,255,.45));
+    animation: windShimmer 1.8s ease-in-out infinite;
+  }
+  @keyframes windShimmer{ 0%,100%{ opacity:.82; } 50%{ opacity:1; } }
+
+  /* ---------- particle canvas ---------- */
+  #fx-canvas{
+    position: fixed; inset: 0; z-index: 20;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">Elemental Text</span>
+    <div class="words">
+      <span class="chip" data-k="fire">fire</span>
+      <span class="chip" data-k="smoke">smoke</span>
+      <span class="chip" data-k="metal">metal</span>
+      <span class="chip" data-k="wind">wind</span>
+    </div>
+    <span class="hint">type these words anywhere ↓</span>
+  </div>
+
+  <div class="scroll" id="scroll">
+    <div class="mirror" id="mirror" aria-hidden="true"></div>
+    <div class="editor" id="editor" contenteditable="true" spellcheck="false"></div>
+  </div>
+
+  <canvas id="fx-canvas"></canvas>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- keyword families ----------
+  const FAMILIES = {
+    fire:  ["fire","fires","fiery","flame","flames","blaze","blazing","inferno","ember","embers"],
+    smoke: ["smoke","smoky","smoking","smog","fog","mist","misty","haze","hazy"],
+    metal: ["metal","metals","metallic","steel","iron","chrome","silver","forge","forged"],
+    wind:  ["wind","winds","windy","breeze","breezy","gale","gust","gusts","draft"]
+  };
+  const WORD_TYPE = {};
+  for (const t in FAMILIES) for (const w of FAMILIES[t]) WORD_TYPE[w] = t;
+  const allWords = Object.keys(WORD_TYPE).sort((a,b)=>b.length-a.length);
+  const RE = new RegExp("\\b(" + allWords.join("|") + ")\\b", "gi");
+
+  const SAMPLE =
+"The fire caught quickly, and a ribbon of smoke uncurled toward the rafters.\n\n" +
+"A cold wind slipped under the door — the flames leaned with the gust, throwing sparks across the old steel stove. Embers rode the breeze into the haze and went dark.\n\n" +
+"Outside, the iron gate groaned. Chrome trim caught the last of the light while the blaze settled into a low, breathing glow. Try editing this — write fire, smoke, metal, or wind and watch.";
+
+  const editor = document.getElementById("editor");
+  const mirror = document.getElementById("mirror");
+  const scroll = document.getElementById("scroll");
+
+  // ---------- highlight: render styled mirror from editor text ----------
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function buildHTML(text){
+    let out = esc(text).replace(RE, function(m){
+      const t = WORD_TYPE[m.toLowerCase()];
+      return '<span class="fx fx-'+t+'" data-fx="'+t+'">'+m+'</span>';
+    });
+    // preserve hard line breaks; trailing newline needs a sentinel to keep height
+    out = out.replace(/\n/g, "<br>");
+    if (text.endsWith("\n")) out += "&nbsp;";
+    return out;
+  }
+
+  function sync(){ mirror.innerHTML = buildHTML(editor.innerText); }
+
+  // seed content
+  editor.innerText = SAMPLE;
+  sync();
+
+  editor.addEventListener("input", sync);
+  // keep mirror scroll-aligned (they share the scroll container, so this is automatic)
+
+  // ---------- particle system ----------
+  const canvas = document.getElementById("fx-canvas");
+  const ctx = canvas.getContext("2d");
+  let DPR = Math.min(window.devicePixelRatio || 1, 2);
+  let W = 0, H = 0;
+
+  function resize(){
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * DPR; canvas.height = H * DPR;
+    canvas.style.width = W + "px"; canvas.style.height = H + "px";
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  const MAX = 2200;
+  const parts = [];
+  function rand(a,b){ return a + Math.random()*(b-a); }
+
+  function spawnFire(r){
+    const n = Math.max(1, Math.round(r.width/26));
+    for (let i=0;i<n;i++){
+      const life = rand(34,64);
+      parts.push({ type:"fire",
+        x: rand(r.left, r.right), y: rand(r.bottom-4, r.bottom+2),
+        vx: rand(-.35,.35), vy: rand(-1.7,-.7),
+        life, max:life, size: rand(3,7) });
+    }
+  }
+  function spawnSmoke(r){
+    const n = Math.max(1, Math.round(r.width/70));
+    for (let i=0;i<n;i++){
+      const life = rand(70,130);
+      parts.push({ type:"smoke",
+        x: rand(r.left+r.width*0.15, r.right-r.width*0.15), y: rand(r.top, r.top+r.height*0.4),
+        vx: rand(-.25,.5), vy: rand(-.9,-.35),
+        life, max:life, size: rand(7,13), grow: rand(.18,.34) });
+    }
+  }
+  function spawnMetal(r){
+    if (Math.random() < 0.16){
+      const life = rand(14,30);
+      const x = rand(r.left, r.right), y = rand(r.top+2, r.bottom-2);
+      parts.push({ type:"metal", x, y, px:x, py:y,
+        vx: rand(-2.4,2.4), vy: rand(-3,-1),
+        life, max:life, size: rand(1,2.2) });
+    }
+  }
+  function spawnWind(r){
+    if (Math.random() < 0.55){
+      const n = Math.max(1, Math.round(r.height/16));
+      for (let i=0;i<n;i++){
+        const life = rand(26,46);
+        const speed = rand(4,8);
+        parts.push({ type:"wind",
+          x: r.left - rand(10,40), y: rand(r.top, r.bottom),
+          vx: speed, vy: rand(-.3,.3),
+          life, max:life, len: speed*rand(3,5) });
+      }
+    }
+  }
+
+  function emit(){
+    if (parts.length > MAX) return;
+    const spans = mirror.querySelectorAll(".fx");
+    for (const s of spans){
+      const rects = s.getClientRects();
+      const t = s.dataset.fx;
+      for (const r of rects){
+        if (r.bottom < -40 || r.top > H + 40 || r.width < 1) continue; // offscreen cull
+        if (t === "fire") spawnFire(r);
+        else if (t === "smoke") spawnSmoke(r);
+        else if (t === "metal") spawnMetal(r);
+        else if (t === "wind") spawnWind(r);
+      }
+    }
+  }
+
+  function update(){
+    for (let i=parts.length-1;i>=0;i--){
+      const p = parts[i];
+      if (p.type === "metal"){ p.px = p.x; p.py = p.y; p.vy += 0.12; }
+      p.x += p.vx; p.y += p.vy;
+      if (p.type === "fire"){ p.vx += rand(-.05,.05); p.vy *= 0.992; }
+      if (p.type === "smoke"){ p.size += p.grow; p.vx += rand(-.03,.05); }
+      if (p.type === "wind"){ p.vy += rand(-.04,.04); }
+      p.life--;
+      if (p.life <= 0) parts.splice(i,1);
+    }
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // additive pass: fire + metal sparks
+    ctx.globalCompositeOperation = "lighter";
+    for (const p of parts){
+      const t = p.life / p.max;
+      if (p.type === "fire"){
+        const r = 255;
+        const g = Math.round(70 + 175*t);
+        const b = Math.round(30*t*t);
+        const sz = p.size * (0.35 + 0.65*t);
+        ctx.fillStyle = "rgba("+r+","+g+","+b+","+(t*0.9)+")";
+        ctx.beginPath(); ctx.arc(p.x, p.y, Math.max(0.3,sz), 0, 6.283); ctx.fill();
+      } else if (p.type === "metal"){
+        ctx.strokeStyle = "rgba(210,230,255,"+(t)+")";
+        ctx.lineWidth = p.size;
+        ctx.beginPath(); ctx.moveTo(p.px, p.py); ctx.lineTo(p.x, p.y); ctx.stroke();
+        ctx.fillStyle = "rgba(255,255,255,"+(t*0.9)+")";
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size*0.9, 0, 6.283); ctx.fill();
+      }
+    }
+
+    // normal pass: smoke + wind
+    ctx.globalCompositeOperation = "source-over";
+    for (const p of parts){
+      const t = p.life / p.max;
+      if (p.type === "smoke"){
+        const a = Math.sin(Math.PI*t) * 0.22; // fade in + out
+        const g = ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.size);
+        g.addColorStop(0, "rgba(150,158,170,"+a+")");
+        g.addColorStop(1, "rgba(150,158,170,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, 6.283); ctx.fill();
+      } else if (p.type === "wind"){
+        const a = Math.sin(Math.PI*t) * 0.5;
+        ctx.strokeStyle = "rgba(180,225,255,"+a+")";
+        ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.len, p.y - p.vy*2); ctx.stroke();
+      }
+    }
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  function loop(){
+    emit();
+    update();
+    draw();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  // focus editor for immediate typing without stealing scroll
+  window.addEventListener("load", ()=> sync());
+})();
+</script>
+</body>
+</html>

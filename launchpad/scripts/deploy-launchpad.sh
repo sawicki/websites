@@ -49,17 +49,21 @@ if ! cmp -s "${CADDY_SRC}" "${CADDY_DST}"; then
   install -m 0644 "${CADDY_SRC}" "${CADDY_DST}"
 fi
 
-install -d -m 0755 -o www-data -g www-data /var/www/landing
-install -m 0644 -o www-data -g www-data "${STAGING}/landing-index.html" /var/www/landing/index.html
+if [[ -d "${STAGING}/www/landing" ]]; then
+  sync_dir "${STAGING}/www/landing" /var/www/landing
+else
+  install -d -m 0755 -o www-data -g www-data /var/www/landing
+  install -m 0644 -o www-data -g www-data "${STAGING}/landing-index.html" /var/www/landing/index.html
 
-for asset in favicon.ico favicon-16x16.png favicon-32x32.png apple-touch-icon.png icon-192.png icon-512.png; do
-  if [[ -f "${STAGING}/${asset}" ]]; then
-    install -m 0644 -o www-data -g www-data "${STAGING}/${asset}" "/var/www/landing/${asset}"
+  for asset in favicon.ico favicon-16x16.png favicon-32x32.png apple-touch-icon.png icon-192.png icon-512.png; do
+    if [[ -f "${STAGING}/${asset}" ]]; then
+      install -m 0644 -o www-data -g www-data "${STAGING}/${asset}" "/var/www/landing/${asset}"
+    fi
+  done
+
+  if [[ -d "${STAGING}/mhpcc" ]]; then
+    sync_dir "${STAGING}/mhpcc" /var/www/landing/mhpcc
   fi
-done
-
-if [[ -d "${STAGING}/mhpcc" ]]; then
-  sync_dir "${STAGING}/mhpcc" /var/www/landing/mhpcc
 fi
 
 if [[ -d "${STAGING}/eberly.xyz" ]]; then
